@@ -1,0 +1,7 @@
+{
+  "name": "rams",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

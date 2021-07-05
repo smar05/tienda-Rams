@@ -1,0 +1,288 @@
+<ion-content [fullscreen]="true">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="cart()">
+      <ion-icon name="cart-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <!--<div id="preloader"></div>-->
+
+  <!--==========================
+  Hero Section
+  ============================-->
+  <section id="hero">
+    <div class="hero-container">
+      <div class="wow fadeIn">
+        <div class="hero-logo" *ngIf="loadingPagina == false">
+          <img style="border-radius: 50%;border: 10px solid #666;" [src]="pagina.logo" alt="Imperial">
+        </div>
+        <h1>Bienvenido a nuestra tienda virtual</h1>
+        <h2>{{pagina.nosotros}}</h2>
+      </div>
+    </div>
+  </section>
+
+  <!--==========================
+  Header Section
+  ============================-->
+  <header id="header">
+    <div class="container">
+    </div>
+  </header>
+  <!-- #header -->
+
+
+  <!--==========================
+  Services Section
+  ============================-->
+  <section id="services">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="section-title">Nuestros Servicios</h3>
+          <div class="section-title-divider"></div>
+          <p class="section-description">
+            Contamos con diversos servicios para garantizarle a nuestros clientes la mejor comodidad y tranquilida.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 service-item">
+          <div class="service-icon"><i class="fa fa-desktop"></i></div>
+          <h4 class="service-title"><a href="">Envios</a></h4>
+          <p class="service-description">
+            Realizamos envios en las principales ciudades de Colombia, se hacen entregas al siguiente dia en la ciudad
+            de Bogota, para el resto de ciudades manejamos un promedio de tres dias de entrega.
+          </p>
+        </div>
+        <div class="col-md-4 service-item">
+          <div class="service-icon"><i class="fa fa-bar-chart"></i></div>
+          <h4 class="service-title"><a href="">Medios de pago</a></h4>
+          <p class="service-description">
+            Contamos con pago en efectivo en principales ciudades de Colombia, para el resto podemos ofrecer pagos con
+            medios virtuales.
+          </p>
+        </div>
+        <div class="col-md-4 service-item">
+          <div class="service-icon"><i class="fa fa-paper-plane"></i></div>
+          <h4 class="service-title"><a href="">Garantias</a></h4>
+          <p class="service-description">
+            Enviamos nuestros productos verificados y ensayados, ante inconvenientes en el producto realizamos
+            devoluciones o cambios.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--==========================
+  Subscrbe Section
+  ============================-->
+  <section id="subscribe">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="col-md-8">
+          <h3 class="subscribe-title">Siguenos</h3>
+          <p class="subscribe-text">
+            Siguenos en nuestras redes sociales para ver novedades.
+          </p>
+        </div>
+        <ng-container *ngIf="loadingPagina == false">
+          <div class="col-md-4 subscribe-btn-container">
+            <ion-row>
+              <ion-col size="4" *ngIf="pagina.facebook">
+                <ion-fab-button color="primary" (click)="goToPage(2)">
+                  <ion-icon name="logo-facebook"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+              <ion-col size="4" *ngIf="pagina.instagram">
+                <ion-fab-button color="instagram" (click)="goToPage(1)">
+                  <ion-icon name="logo-instagram"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+              <ion-col size="4" *ngIf="pagina.whatsapp">
+                <ion-fab-button color="success" (click)="goToPage(0)">
+                  <ion-icon name="logo-whatsapp"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+
+  <!--==========================
+  Porfolio Section
+  ============================-->
+  <section id="portfolio">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="icon" *ngIf="loading == true">
+          <img src="../../assets/imagenes/loadingCarrito.gif">
+          <div class="col-md-12">
+            <h3 class="section-title">Cargando</h3>
+            <div class="section-title-divider"></div>
+          </div>
+        </div>
+        <ng-container *ngIf="loading == false">
+          <div class="col-md-12">
+            <h3 class="section-title">Destacados</h3>
+            <div class="section-title-divider"></div>
+          </div>
+          <ng-container *ngFor="let producto of productosOrdenados()">
+            <div class="col-md-3" *ngIf="producto.destacado == true">
+              <a class="portfolio-item" (click)="goProducto(producto)" *ngIf="producto.imagen1">
+                <ion-card style="height: auto;">
+                  <ion-card-header class="ion-text-center" *ngIf="producto.disponible==true">
+                    <div class="details">
+                      <img style="width: 100%;" [src]="producto.imagen1">
+                    </div>
+                    <ion-card-title><b>{{producto.nombre}}</b></ion-card-title>
+                    <p *ngIf="!producto.variantes">{{producto.precio | currency:'COP'}}</p>
+                    <ion-button expand="full" (click)="carrito(producto)" *ngIf="!producto.variantes"><b>Añadir al
+                        carrito</b></ion-button>
+                    <ion-button expand="full" *ngIf="producto.variantes"><b>Ver Producto</b></ion-button>
+                  </ion-card-header>
+                  <ion-card-header class="ion-text-center" *ngIf="producto.disponible==false"
+                    style="background-color: #fa5448;">
+                    <div class="details" style="width: 100%;">
+                      <img [src]="producto.imagen1">
+                    </div>
+                    <ion-card-title style="color: white;"><b>AGOTADO</b></ion-card-title>
+                  </ion-card-header>
+                </ion-card>
+              </a>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let categoria of categoriasOrdenadas();let i=index">
+            <div class="col-md-12" (click)="activarCategoria(i)">
+              <h3 class="section-title">{{categoria.nombre}}</h3>
+              <div class="section-title-divider"></div>
+            </div>
+
+            <ng-container *ngIf="categoria.activar">
+              <ng-container *ngFor="let producto of productosOrdenados()">
+                <div class="col-md-3" *ngIf="categoria.id==producto.categoria">
+                  <a class="portfolio-item" (click)="goProducto(producto)" *ngIf="producto.imagen1">
+                    <ion-card style="height: auto;">
+                      <ion-card-header class="ion-text-center" *ngIf="producto.disponible==true">
+                        <div class="details">
+                          <img style="width: 100%;" [src]="producto.imagen1">
+                        </div>
+                        <ion-card-title><b>{{producto.nombre}}</b></ion-card-title>
+                        <p *ngIf="!producto.variantes">{{producto.precio | currency:'COP'}}</p>
+                        <ion-button expand="full" (click)="carrito(producto)" *ngIf="!producto.variantes"><b>Añadir al
+                            carrito</b></ion-button>
+                        <ion-button expand="full" *ngIf="producto.variantes"><b>Ver producto</b></ion-button>
+                      </ion-card-header>
+                      <ion-card-header class="ion-text-center" *ngIf="producto.disponible==false"
+                        style="background-color: #fa5448;">
+                        <div class="details" style="width: 100%;">
+                          <img [src]="producto.imagen1">
+                        </div>
+                        <ion-card-title style="color: white;"><b>AGOTADO</b></ion-card-title>
+                      </ion-card-header>
+                    </ion-card>
+                  </a>
+                </div>
+              </ng-container>
+            </ng-container>
+
+
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+
+  <!--==========================
+  Contact Section
+  ============================-->
+  <section id="contact">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="section-title">Contactenos</h3>
+          <div class="section-title-divider"></div>
+          <p class="section-description">
+            Contamos con los siguientes medios de contacto para poder atender tus preguntas.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 col-md-push-2">
+          <div class="info">
+            <ion-row>
+              <ion-col size="4" *ngIf="pagina.facebook">
+                <ion-fab-button color="primary" (click)="goToPage(2)">
+                  <ion-icon name="logo-facebook"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+              <ion-col size="8">
+                <b>{{pagina.facebook}}</b>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="4" *ngIf="pagina.instagram">
+                <ion-fab-button color="instagram" (click)="goToPage(1)">
+                  <ion-icon name="logo-instagram"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+              <ion-col size="8">
+                <b>{{pagina.instagram}}</b>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="4" *ngIf="pagina.whatsapp">
+                <ion-fab-button color="success" (click)="goToPage(0)">
+                  <ion-icon name="logo-whatsapp"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+              <ion-col size="8">
+                <br>
+                <b>{{pagina.whatsapp}}</b>
+              </ion-col>
+            </ion-row>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!--==========================
+  Footer
+============================-->
+  <footer id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- #footer -->
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  <!-- Required JavaScript Libraries -->
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/superfish/hoverIntent.js"></script>
+  <script src="lib/superfish/superfish.min.js"></script>
+  <script src="lib/morphext/morphext.min.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/stickyjs/sticky.js"></script>
+  <script src="lib/easing/easing.js"></script>
+
+  <!-- Template Specisifc Custom Javascript File -->
+  <script src="js/custom.js"></script>
+
+  <script src="contactform/contactform.js"></script>
+</ion-content>

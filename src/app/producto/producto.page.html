@@ -1,0 +1,108 @@
+<ion-toolbar color="dark">
+  <ion-buttons slot="start" (click)="back()">
+    <ion-button>
+      <ion-icon name="play-back-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-title>{{producto.nombre}}</ion-title>
+</ion-toolbar>
+
+<ion-content>
+  <section id="portfolio" style="background-color: #f5f5f5;">
+    <div class="container wow fadeInUp">
+      <div class="row" style="background-color: #f5f5f5;">
+        <div class="icon" *ngIf="loading == true">
+          <img src="../../assets/imagenes/loadingCarrito.gif">
+          <div class="col-md-12">
+            <h3 class="section-title">Cargando</h3>
+            <div class="section-title-divider"></div>
+          </div>
+        </div>
+        <ng-container *ngIf="loading == false">
+          <div class="portfolio-item">
+            <div class="details" style="background-color: #f5f5f5;">
+              <img style="height: 100%;" [src]="fotoPrincipal">
+              <ion-row>
+                <ion-col size="4">
+                  <ion-card *ngIf="producto.imagen1" (click)="foto(0)">
+                    <img [src]="producto.imagen1">
+                  </ion-card>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-card *ngIf="producto.imagen2" (click)="foto(1)">
+                    <img [src]="producto.imagen2">
+                  </ion-card>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-card *ngIf="producto.imagen3" (click)="foto(2)">
+                    <img [src]="producto.imagen3">
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="4">
+                  <ion-card *ngIf="producto.imagen4" (click)="foto(3)">
+                    <img [src]="producto.imagen4">
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+              <br>
+  
+              <ion-card *ngIf="producto.variantes">
+                <ion-item>
+                  <ion-label>{{producto.variantesOp}}</ion-label>
+                  <ion-select placeholder="Seleccione una opcion" [(ngModel)]="producto.caracteristica">
+                    <ion-select-option *ngFor="let opciones of subVariantes" [value]="opciones.nombre">
+                      {{opciones.nombre}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-card>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer" style="background-color: #cfcfcf;color: black;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="ion-text-center">
+            <h1><b>Descripcion</b></h1>
+            <p>
+              {{producto.descripcion}}
+            </p>
+            <h2 *ngIf="producto.variantes">
+              <ng-container *ngFor="let precios of subVariantes">
+                <b *ngIf="producto.caracteristica == precios.nombre">
+                  {{precios.precio | currency:'COP'}}
+                </b>
+              </ng-container>              
+            </h2>
+            <h2 *ngIf="!producto.variantes">
+              <b>{{producto.precio | currency:'COP'}}</b>
+            </h2>
+          </div>
+
+          <ng-container *ngIf="producto.variantes && producto.caracteristica">
+            <ion-card style="width: 50%;margin-left: auto;margin-right: auto;" *ngIf="(producto.precio!=null) && (producto.disponible==true)">
+              <ion-card-header color="danger" class="ion-text-center" (click)="carrito()">
+                <ion-icon name="cart-outline"></ion-icon>
+              </ion-card-header>
+            </ion-card>
+          </ng-container>
+          <ng-container *ngIf="!producto.variantes">
+            <ion-card style="width: 50%;margin-left: auto;margin-right: auto;" *ngIf="(producto.precio!=null) && (producto.disponible==true)">
+              <ion-card-header color="danger" class="ion-text-center" (click)="carrito()">
+                <ion-icon name="cart-outline"></ion-icon>
+              </ion-card-header>
+            </ion-card>
+          </ng-container>
+          
+        </div>
+      </div>
+    </div>
+  </footer>
+</ion-content>
